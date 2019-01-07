@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+{% block main %}
+  <main>
+    <div class="infosbox">
+      <div class="newsview">
+        <h3 class="news_title">{{ Article[0].title }}</h3>
+        <div class="bloginfo">
+          <ul>
+            <li class="author">作者：<a href="/">{{ Article[0].author }}</a></li>
+            <li class="lmname"><a href="/">{{ Article[0].type.name }}</a></li>
+            <li class="timer">时间：{{ Article[0].create_time }}</li>
+            <li class="view">{{ Article[0].read }}人已阅读</li>
+          </ul>
+        </div>
+        <div class="tags">
+            {% for tag in tag_list %}
+          <a href="/" target="_blank">{{ tag }}</a> &nbsp;
+            {% end %}
+        </div>
+          {% if Article[0].intro %}
+        <div class="news_about"><strong>简介</strong>{{ Article[0].intro }}</div>
+          {% end %}
+        <div class="news_con">
+          &nbsp; {% raw content %}</div>
+      </div>
+      <div class="share">
+        <a onclick="add_like({{ Article[0].id }})" href="JavaScript:makeRequest('/e/public/digg/?classid=3&amp;id=19&amp;dotop=1&amp;doajax=1&amp;ajaxarea=diggnum','EchoReturnedText','GET','');"><p class="diggit"> 很赞哦！ (<b id="diggnum"><script type="text/javascript" src="/e/public/ViewClick/?classid=2&id=20&down=5"></script>{{ like }}</b>)</p></a>
+      </div>
+      <div class="nextinfo">
+          {% if pre_article == "" %}
+          <p>上一篇：<a href="/">到顶了，返回首页</a></p>
+          {% else %}
+        <p>上一篇：<a href="/article?target={{ pre_article.id }}">{{ pre_article.title }}</a></p>
+          {% end %}
+          {% if next_article == "" %}
+          <p>上一篇：<a href="/">到底了，返回首页</a></p>
+          {% else %}
+        <p>下一篇：<a href="/article?target={{ next_article.id }}">{{ next_article.title }}</a></p>
+          {% end %}
+      </div>
+      <div class="news_pl">
+        <h2>文章评论</h2>
+        <div class="gbko"> 
+          <script src="/e/pl/more/?classid=77&amp;id=106&amp;num=20"></script>
+          {% for comment in comments %}
+            <div class="fb">
+
+            <ul>
+              <p class="fbtime"><span>{{ comment.create_time }}</span>游客：{{ comment.visitor.username }}</p>
+              <p class="fbinfo">{{ comment.content }}</p>
+            </ul>
+
+          </div>{% end %}
+          <!--<div class="fb">-->
+            <!--<ul>-->
+              <!--<p class="fbtime"><span>2018-07-24 08:52:48</span> 卜野</p>-->
+              <!--<p class="fbinfo"></p>-->
+              <!--<div class="ecomment"><span class="ecommentauthor">网友 家蚂蚁 的原文：</span>-->
+                <!--<p class="ecommenttext">坚持哟!看你每天都有写，请继续加油，再接再厉哦</p>-->
+              <!--</div>-->
+            <!--</ul>-->
+          <!--</div>-->
+          
+          <script>
+		  function CheckPl(obj)
+		  {
+		  if(obj.saytext.value=="")
+		  {
+		  alert("您没什么话要说吗？");
+		  obj.saytext.focus();
+		  return false;
+		  }
+		  return true;
+		  }
+
+		  function add_comment(target){
+        var content = document.getElementById("saytext");
+        if(content.value == ""){
+        alert("不可发布空白信息！")
+        }else{
+        var xhr;
+        if(window.XMLHttpRequest){
+        xhr = new XMLHttpRequest();
+        }
+        url ="/add_comment?target=" + target + "&content=" + content.value;
+        xhr.open("GET",url,true);
+
+        xhr.onreadystatechange=function(){
+
+            if(xhr.readyState == 4 && xhr.status == 200){
+                var data = xhr.responseText;
+                data = JSON.parse(data);
+                if(data.status == "1"){
+                location.reload();
+                    alert("评论成功！")
+                }
+                else{
+                    alert("评论失败！")
+                }
+                }
+            }
+            xhr.send();
+}
+}
+		  function add_like(target){
+        var xhr;
+        if(window.XMLHttpRequest){
+        xhr = new XMLHttpRequest();
+        }
+        url ="/add_like?target=" + target;
+        xhr.open("GET",url,true);
+
+        xhr.onreadystatechange=function(){
+
+            if(xhr.readyState == 4 && xhr.status == 200){
+                var data = xhr.responseText;
+                data = JSON.parse(data);
+                if(data.status == "1"){
+                location.reload();
+                    alert("点赞成功！")
+                }
+                else if (data.status == "2"){
+                    alert("不可重复点赞！")
+                }
+                else{
+                    alert("点赞失败！")
+                }
+                }
+            }
+            xhr.send();
+}
+
+		  </script>
+          <!--<form name="saypl" id="saypl" onsubmit="return CheckPl(document.saypl)">-->
+            <div id="plpost">
+              <p class="saying"><span><a href="/e/pl/?classid=77&amp;id=106">共有<script type="text/javascript" src="/e/public/ViewClick/?classid=77&amp;id=106&amp;down=2"></script>{{ comments.count() }}条评论</a></span>来说两句吧...</p>
+              <!--<p class="yname"><span>用户名:</span>-->
+                <!--<input name="username" type="text" class="inputText" id="username" value="" size="16">-->
+              <!--</p>-->
+              <!--<p class="yzm"><span>验证码:</span>-->
+                <!--<input name="key" type="text" class="inputText" size="16">-->
+              <!--</p>-->
+              <input name="nomember" type="hidden" id="nomember" value="1" checked="checked">
+              <textarea name="saytext" rows="6" id="saytext"></textarea>
+              <input name="imageField" type="submit" onclick="add_comment({{ Article[0].id }})" value="提交">
+              <input name="id" type="hidden" id="id" value="106">
+              <input name="classid" type="hidden" id="classid" value="77">
+              <input name="enews" type="hidden" id="enews" value="AddPl">
+              <input name="repid" type="hidden" id="repid" value="0">
+              <input type="hidden" name="ecmsfrom" value="/joke/talk/2018-07-23/106.html">
+            </div>
+          <!--</form>-->
+        </div>
+      </div>
+    </div>
+  </main>
+</article>
+
+{% end %}

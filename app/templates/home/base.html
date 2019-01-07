@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>首页 - 张旭伟的个人博客</title>
+<meta name="keywords" content="张旭伟的个人博客" />
+<meta name="description" content="张旭伟的个人博客" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="{{ static_url('home/css/base.css') }}" rel="stylesheet">
+<link href="{{ static_url('home/css/index.css') }}" rel="stylesheet">
+<link href="{{ static_url('home/css/m.css') }}" rel="stylesheet">
+<link href="{{ static_url('home/css/info.css') }}" rel="stylesheet">
+<script src="{{ static_url('home/js/jquery.min.js') }}" type="text/javascript"></script>
+<script type="text/javascript" src="{{ static_url('home/js/hc-sticky.js') }}"></script>
+<script type="text/javascript" src="{{ static_url('home/js/comm.js') }}"></script>
+<!--[if lt IE 9]>
+<script src="{{ static_url('home/js/modernizr.js') }}"></script>
+<![endif]-->
+</head>
+
+<body>
+<header class="header-navigation" id="header">
+  <nav><div class="logo"><a href="/">张旭伟个人博客</a></div>
+    <h2 id="mnavh"><span class="navicon"></span></h2>
+    <ul id="starlist">
+      <li><a href="/">我的博客</a></li>
+      <li><a href="/gbook">留言</a></li>
+    </ul>
+</nav>
+</header>
+<article>
+  <aside class="l_box">
+          <div class="about_me">
+        <h2>关于我</h2>
+        <ul>
+          <i style="width:110px;height:110px;"><img src="{{ static_url('img/personal_icon/personal_icon.jpg') }}" ></i>
+          <p><b>张旭伟</b>，一位普普通通、平凡而不甘于平凡的90后男青年。他只是普通专科院校的一名普通学生，但是他并不认为矮于别人。</p>
+        </ul>
+      </div>
+ <div class="search">
+      <form action="/" method="get" name="searchform" id="searchform">
+        <input name="keyboard" id="keyboard" class="input_text" placeholder="请输入关键字词" style="color: rgb(153, 153, 153);" onfocus="if(value=='请输入关键字词'){this.style.color='#000';value=''}" onblur="if(value==''){this.style.color='#999';value='请输入关键字词'}" type="text">
+        <input name="show" value="title" type="hidden">
+        <input name="tempid" value="1" type="hidden">
+        <input name="tbname" value="news" type="hidden">
+        <input name="Submit" class="input_submit" value="搜索" type="submit">
+      </form>
+    </div>
+    <div class="fenlei">
+      <h2>文章分类</h2>
+      <ul>
+          {% for type in type_list %}
+        <li><a href="/?type={{ type[0].type_id }}">{{ type[0].type.name }}（{{ len(type) }}）</a></li>
+          {% end %}
+      </ul>
+    </div>
+    <div class="tuijian">
+      <h2>站长推荐</h2>
+      <ul>
+          {% for recommend in recommends %}
+        <li><a href="/article?target={{ recommend.article.id }}">{{ recommend.article.title }}</a></li>
+          {% end %}
+      </ul>
+    </div>
+     <div class="tuijian">
+      <h2>点击排行</h2>
+      <ul>
+          {% for article in ranking %}
+        <li><a href="/article?target={{ article.id }}">{{ article.title }}</a></li>
+          {% end %}
+      </ul>
+    </div>
+<div class="cloud">
+      <h2>标签云</h2>
+      <ul>
+          {% for tag in tags %}
+        <a href="/?tag={{ tag.name }}">{{ tag.name }}</a>
+          {% end %}
+      </ul>
+    </div>
+    <div class="guanzhu">
+      <h2>其他链接</h2>
+      <ul>
+          <a style="color:blue;" target="_blank" href="https://blog.csdn.net/zxw_future">他的CSDN博客链接</a><br>
+          <a style="color:blue;" target="_blank" href="https://www.cnblogs.com/zhangxuwei">他的博客园链接</a><br>
+      </ul>
+    </div>
+  </aside>
+{% block main %}{% end %}
+</article>
+<footer>
+  <p>Tornado项目</p>
+</footer>
+<a href="#" class="cd-top">Top</a>
+</body>
+</html>

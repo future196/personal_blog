@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}文章{% end %}
+{% block main %}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+        <h1 class="page-header">管理 <span class="badge">{{ gbooks.count() }}</span></h1>
+        <div class="table-responsive">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <!--<th><span class="glyphicon glyphicon-th-large"></span> <span class="visible-lg">选择</span></th>-->
+                <th><span class="glyphicon glyphicon-time"></span> <span class="visible-lg">日期</span></th>
+                <th><span class="glyphicon glyphicon-file"></span> <span class="visible-lg">内容</span></th>
+                  <th><span class="glyphicon glyphicon-time"></span> <span class="visible-lg">昵称</span></th>
+                  <th><span class="glyphicon glyphicon-time"></span> <span class="visible-lg">邮箱</span></th>
+                <th><span class="glyphicon glyphicon-pencil"></span> <span class="visible-lg">操作</span></th>
+              </tr>
+            </thead>
+            <tbody>
+            {% for gbook in gbooks %}
+              <tr>
+                <!--<td><input type="checkbox" class="input-control" name="checkbox[]" value="" /></td>-->
+                <td class="article-title">{{ gbook.create_time }}</td>
+                <td>{{ gbook.content }}</td>
+                  <td>{{ gbook.username }}</td>
+                  <td>{{ gbook.email }}</td>
+                <td><a rel="1" name="reply" onclick="document.getElementById('reply_{{ gbook.id }}').style='display'">回复</a> <a rel="1" name="delete">删除</a></td>
+              </tr>
+            <form action="/admin/gbook_reply" method="post">
+            <tr style="display:none" id="reply_{{ gbook.id }}">
+                <td class="article-title"></td>
+                <td>
+                  <textarea rows="3" required style="width:100%" name="reply_content" placeholder="回复内容" >{{ gbook.reply }}</textarea>
+                    <input type="text" style="display:none" name="target" value="{{ gbook.id }}">
+                </td>
+                  <td></td>
+                  <td></td>
+                <td><input type="submit" value="确认回复" > <a onclick="document.getElementById('reply_{{ gbook.id }}').style='display:none'" rel="1">取消</a></td>
+              </tr>
+                </form>
+            {% end %}
+            </tbody>
+          </table>
+        </div>
+        <footer class="message_footer">
+          <nav>
+            <!--<div class="btn-toolbar operation" role="toolbar">-->
+              <!--<div class="btn-group" role="group"> <a class="btn btn-default" onClick="select()">全选</a> <a class="btn btn-default" onClick="reverse()">反选</a> <a class="btn btn-default" onClick="noselect()">不选</a> </div>-->
+              <!--<div class="btn-group" role="group">-->
+                <!--<button type="submit" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="删除全部选中" name="checkbox_delete">删除</button>-->
+              <!--</div>-->
+            <!--</div>-->
+            <ul class="pagination pagenav">
+              <li class="disabled"><a aria-label="Previous"> <span aria-hidden="true">&laquo;</span> </a> </li>
+              <li class="active"><a>1</a></li>
+              <li class="disabled"><a aria-label="Next"> <span aria-hidden="true">&raquo;</span> </a> </li>
+            </ul>
+          </nav>
+        </footer>
+    </div>
+
+{% end %}

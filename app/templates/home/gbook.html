@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block main %}
+  <main class="r_box">
+<div class="gbook">
+        {% for gbook in gbooks %}
+      <div class="fb">
+        <ul>
+          <p class="fbtime"><span> {{ gbook.create_time }} </span> {{ gbook.username }}</p>
+          <p class="fbinfo">{{ gbook.content }}</p>
+        </ul>
+      </div>
+    {% if gbook.reply %}
+      <div class="hf">
+        <ul>
+          <p class="zzhf"><font color="#FF0000">站长回复:</font> {{ gbook.reply }}</p>
+        </ul>
+      </div>
+    {% end %}
+        {% end %}
+      <div class="gbox">
+        <form action="/add_gbook" method="post" name="form1" id="form1" onsubmit="return check()">
+          <p> <strong>来说点儿什么吧...</strong></p>
+          <p><span> 您的姓名:</span>
+            <input name="name" type="text" id="name" required maxlength="10">
+            *</p>
+          <p><span>联系邮箱:</span>
+            <input name="email" type="email" id="email" required maxlength="30">
+            *</p>
+          <p><span class="tnr">留言内容:</span>
+            <textarea name="lytext" cols="60" rows="12" id="lytext" required></textarea>
+          </p>
+          <p>
+            <input type="submit" name="Submit3" value="提交">
+            <input name="enews" type="hidden" id="enews" value="AddGbook">
+          </p>
+            <script>
+                function check(){
+                    var content = document.getElementById("lytext").value;
+                    if(content == ""){
+                        alert("内容不能为空哦！");
+                        return false;
+                    }
+
+                }
+            </script>
+        </form>
+      </div>
+    </div>
+  </main>
+{% end %}

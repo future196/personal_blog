@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block main %}
+  <main class="r_box">
+    {% for article in result %}
+      <li>
+    <i><a href="/article?target={{ article.id }}">{% if article.face_img %}<img src="/static/img/article_face/{{ article.face_img }}">{% end %}</a></i>
+      <h3><a href="/article?target={{ article.id }}">{{ article.title }}</a></h3>
+      <p>{{ article.intro }}</p>
+    </li>
+      {% end %}
+    <div class="pagelist">
+      {% if has_pre %}
+            <a href="/?page={{ page - 1 }}{% if type_id != 0 %}&type={{ type_id }}{% end %}{% if tag != 0 %}&tag={{ tag_ }}{% end %}{% if search != 0 %}&keyboard={{ search }}{% end %}">上一页</a>
+      {% else %}
+            <a href="javascript:;">上一页</a>
+      {% end %}
+        &nbsp;&nbsp;<a class="curPage">{{ page }}&nbsp;/&nbsp;{{ pages }}</a>
+      {% if has_next %}
+        &nbsp;&nbsp;<a href="/?page={{ page + 1 }}{% if type_id != 0 %}&type={{ type_id }}{% end %}{% if tag != 0 %}&tag={{ tag_ }}{% end %}{% if search != 0 %}&keyboard={{ search }}{% end %}">下一页</a>
+      {% else %}
+      &nbsp;&nbsp;<a href="javascript:;">下一页</a>
+      {% end %}
+    </div>
+  </main>
+
+{% end %}
